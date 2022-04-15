@@ -89,7 +89,9 @@ Virtual-Classroom is a web conferencing app that allows teachers to connect with
 Virtual-Classroom is a React app built using Twilio's programmable video and conversations SDK. The collaborative whiteboard functionality is implemented using the Data Track API.
 
 ### Features:
-* TBD
+* Interactive environment to learn (video calling and microphone option)
+* Whitebord (learning tool)
+* Reactions (emojis)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -109,7 +111,10 @@ Virtual-Classroom is a React app built using Twilio's programmable video and con
 <!-- ROADMAP -->
 ## Roadmap
 
-- [] Add classroom page
+- [X] Integrate camera/mic option
+- [X] Integrate a whiteboard
+- [X] Integrate emojis
+- [X] Integrate disable/enable option for both video and microphone 
 
 
 
