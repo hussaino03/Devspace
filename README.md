@@ -25,7 +25,7 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <a href="https://github.com/BiaDd/hoohacks2022">
+  <a href="https://github.com/hussaino03/Devspace">
     <img src="https://www.vhv.rs/dpng/d/53-534419_college-student-vector-png-transparent-png.png" alt="Logo" width="80" height="80">
   </a>
 
@@ -34,14 +34,14 @@
   <p align="center">
     A Virtual Classroom Designed To Optimize Learning Approaches!
     <br />
-    <a href="https://github.com/BiaDd/hoohacks2022"><strong>Explore the docs »</strong></a>
+    <a href="https://github.com/hussaino03/Devspace"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/BiaDd/hoohacks2022">View Demo</a>
+    <a href="https://github.com/hussaino03/Devspace">View Demo</a>
     ·
-    <a href="https://github.com/BiaDd/hoohacks2022/issues">Report Bug</a>
+    <a href="https://github.com/hussaino03/Devspace/issues">Report Bug</a>
     ·
-    <a href="https://github.com/BiaDd/hoohacks2022/issues">Request Feature</a>
+    <a href="https://github.com/hussaino03/Devspace/issues">Request Feature</a>
   </p>
 </div>
 
