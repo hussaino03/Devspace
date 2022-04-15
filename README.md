@@ -76,19 +76,19 @@
 
 
 <!-- ABOUT THE PROJECT -->
-# Inspiration
+## Inspiration
 
 The inspiration for our project came from the fact that due to the implementation of remote learning, teachers all over the world had to interact with and teach their students virtually. Today, two major platforms namely Google Meet and Zoom dominate the virtual learning industry. However both platforms have shortcomings. Google Meet for example lacks the functionality of a built in collaborative whiteboard or annotation while a teacher is presenting. Zoom on the other hand has these functionalities but lacks the ease of access of google meet via a web browser. Our app aims to strike a combination of the features of Zoom and ease of access of Google Meet.
 
-# What it does
+## What it does
 
 Virtual-Classroom is a web conferencing app that allows teachers to connect with their students and share their learning materials via either screen-sharing or using a collaborative whiteboard. The use of a collaborative whiteboard makes it easier for teachers to supplement their learning material and for students to better explain their difficulties and interact with teachers.
 
-# How We built it
+## How We built it
 
 Virtual-Classroom is a React app built using Twilio's programmable video and conversations SDK. The collaborative whiteboard functionality is implemented using the Data Track API.
 
-Features:
+### Features:
 * TBD
 
 <p align="right">(<a href="#top">back to top</a>)</p>
