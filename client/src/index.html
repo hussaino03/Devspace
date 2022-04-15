@@ -10,10 +10,16 @@
     <header><h1>Virtual Classroom</h1></header>
 
     <main>
+      <div class="loader-wrapper">
+        <div class="loader"></div>
+        <div class="loader-section section-left"></div>
+        <div class="loader-section section-right"></div>
+      </div>
       <div class="start card">
         <button id="media-preview">Preview camera and microphone</button>
       </div>
 
+      
       <div id="local-preview" class="card local-preview" hidden>
         <div id="video-preview" class="video-preview"></div>
         <canvas id="audio-data" width="300" height="100"></canvas>
