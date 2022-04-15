@@ -1,0 +1,360 @@
+@import "normalize.css";
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  height: 100%;
+}
+body {
+  min-height: 100%;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+    Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+}
+
+header,
+footer {
+  background-color: #F22F46;
+  color: #fff;
+}
+header a,
+footer a {
+  color: #fff;
+}
+header h1 {
+  font-size: 2em;
+  margin: 0.75em;
+  line-height: 1;
+}
+footer p {
+  font-size: 1em;
+  margin: 1em;
+}
+
+header h1,
+footer p {
+  text-align: center;
+}
+
+button {
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  border: none;
+  background-color: #F22F46;
+  color: #fff;
+  padding: 0.5em;
+  border-radius: 6px;
+}
+button[disabled] {
+  opacity: 0.5;
+}
+
+select {
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  appearance: none;
+  border: none;
+  border-radius: 6px;
+  padding: 0.5em;
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.card {
+  padding: 20px;
+  margin-top: 1em;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 6px;
+  box-shadow: 0 2.8px 2.2px rgba(0, 0, 0, 0.02),
+    0 6.7px 5.3px rgba(0, 0, 0, 0.028), 0 12.5px 10px rgba(0, 0, 0, 0.035),
+    0 22.3px 17.9px rgba(0, 0, 0, 0.042), 0 41.8px 33.4px rgba(0, 0, 0, 0.05),
+    0 100px 80px rgba(0, 0, 0, 0.07);
+}
+
+.start.card {
+  text-align: center;
+}
+
+.start.card,
+
+.local-preview.card {
+  width: 340px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.local-preview .video-preview {
+  position: relative;
+  margin-bottom: 20px;
+  height: 0;
+  padding-top: 75%;
+}
+.local-preview video {
+  width: 100%;
+  max-height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.local-preview canvas {
+  margin-bottom: 20px;
+}
+.local-preview .media-select {
+  margin-bottom: 1em;
+}
+.local-preview select {
+  display: block;
+  margin-top: 0.5em;
+  width: 100%;
+}
+.local-preview .media-select:last-child {
+  margin-bottom: 0;
+}
+
+.local-preview .controls + form {
+  margin-top: 1em;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+.local-preview .form-input {
+  margin-bottom: 1em;
+}
+.local-preview .form-input input {
+  display: block;
+  width: 100%;
+  font-size: inherit;
+  padding: 0.5em;
+  margin-top: 0.5em;
+  border-radius: 6px;
+  border-width: 1px;
+}
+/* grid layout */
+
+.video-chat {
+  display: grid;
+  grid-template-rows: 1fr auto;
+  height: 100%;
+  background-color: #111;
+}
+.video-chat[hidden] {
+  display: none;
+}
+.video-chat.screen-share {
+  grid-template-rows: 1fr 100px auto;
+}
+
+.participants {
+  --grid-columns: 1;
+  --grid-rows: 1;
+  display: grid;
+  grid-template-columns: repeat(var(--grid-columns), 1fr);
+  grid-template-rows: repeat(var(--grid-rows), 1fr);
+  padding: 0;
+  margin: 0;
+}
+
+.participants > li {
+  list-style: none;
+  display: flex;
+  align-items: center;
+}
+.participants > li.dominant video {
+  border: 4px solid #F22F46;
+}
+.participants .video-wrapper {
+  position: relative;
+  width: 100%;
+  max-height: calc(100vh - 15rem);
+}
+.participants .actions {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  z-index: 10;
+}
+.participants .video-wrapper video {
+  width: 100%;
+  max-height: inherit;
+}
+
+.participants .video-wrapper .info {
+  position: absolute;
+  bottom: 8px;
+  left: 8px;
+  right: 8px;
+  z-index: 10;
+  text-align: center;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+}
+.participants .video-wrapper .info p {
+  font-size: 2em;
+  border: 4px solid #F22F46;
+  border-radius: 50%;
+  padding: 0.5em;
+  margin: 0;
+  background: #060606;
+}
+.participants .video-wrapper .name {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.7);
+  color: #fff;
+  margin: 0;
+  padding: 0.25em;
+}
+
+.screen-share .participants {
+  display: flex;
+  flex-direction: row;
+}
+.screen-share .participants .video-wrapper {
+  max-height: 100px;
+}
+.video-chat.screen-share #screen {
+  position: relative;
+  width: 100%;
+  max-height: calc(100vh - 15rem - 100px);
+  display: flex;
+  align-content: center;
+}
+.video-chat.screen-share #screen video {
+  max-height: inherit;
+  width: 100%;
+}
+
+.live-controls {
+  background-color: #060606;
+  padding: 0.5em;
+}
+.live-controls ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  margin-top: 0.5em;
+}
+.live-controls button {
+  margin-right: 2px;
+  line-height: 1;
+}
+.live-controls #reactions button {
+  border-radius: 50%;
+  font-size: 1.5em;
+}
+
+/* reactions */
+.reaction {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  right: 8px;
+  text-align: center;
+  z-index: 10;
+}
+
+.reaction.size-1 {
+  font-size: 2em;
+}
+.reaction.size-2 {
+  font-size: 3em;
+}
+.reaction.size-3 {
+  font-size: 4em;
+}
+.reaction.size-4 {
+  font-size: 6em;
+}
+.reaction.size-5 {
+  font-size: 8em;
+}
+
+.whiteboard-wrapper {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  background-color: #fff;
+}
+.whiteboard-canvas {
+  object-fit: contain;
+  display: block;
+  max-height: 65vh;
+  max-width: 100%;
+}
+
+.colour-list,
+.brush-list {
+  list-style-type: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  margin: 0.5em 0 0;
+  --background-color: #fff;
+}
+
+.brush-list {
+  top: 42px;
+}
+
+.colour-list label,
+.brush-list label {
+  background-color: var(--background-color);
+  font-size: 0;
+  display: block;
+  width: 32px;
+  height: 32px;
+  border-radius: 32px;
+  margin-right: 8px;
+  border: 3px solid transparent;
+}
+.colour-list li:last-child label,
+.brush-list li:last-child label {
+  margin-right: 0;
+}
+.colour-list input:checked + label,
+.brush-list input:checked + label {
+  border-color: #F22F46;
+}
+.colour-list input,
+.brush-list input {
+  display: none;
+}
+
+.brush-list label {
+  position: relative;
+}
+.brush-list label::after {
+  content: " ";
+  display: block;
+  background-color: #000;
+  position: absolute;
+}
+.brush-list label[for="small"]::after {
+  width: 4px;
+  height: 4px;
+  border-radius: 4px;
+  top: 11px;
+  left: 11px;
+}
+.brush-list label[for="medium"]::after {
+  width: 8px;
+  height: 8px;
+  border-radius: 8px;
+  top: 9px;
+  left: 9px;
+}
+.brush-list label[for="large"]::after {
+  width: 14px;
+  height: 14px;
+  border-radius: 14px;
+  top: 6px;
+  left: 6px;
+}

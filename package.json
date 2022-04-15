@@ -1,35 +1,33 @@
 {
-  "name": "reactjs-project-template-structure",
-  "version": "0.1.0",
-  "private": true,
-  "dependencies": {
-    "@testing-library/jest-dom": "^4.2.4",
-    "@testing-library/react": "^9.4.0",
-    "@testing-library/user-event": "^7.2.1",
-    "node-sass": "^4.13.1",
-    "react": "^16.12.0",
-    "react-dom": "^16.12.0",
-    "react-scripts": "3.3.0"
-  },
+  "name": "virtual-classroom",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "start": "run-p \"server:start\" \"client:start\"",
+    "server:start": "nodenv server/index.js --exec nodemon | pino-colada",
+    "client:start": "parcel watch client/src/index.html --out-dir client/dist",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "eslintConfig": {
-    "extends": "react-app"
+  "keywords": [],
+  "author": "Phil Nash <philnash@twilio.com> (https://philna.sh)",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.17.1",
+    "express-pino-logger": "^5.0.0",
+    "normalize.css": "^8.0.1",
+    "parcel-bundler": "^1.12.4",
+    "pino": "^6.3.2",
+    "twilio": "^3.48.0",
+    "twilio-video": "^2.6.0"
   },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+  "browserslist": [
+    "since 2017-06"
+  ],
+  "devDependencies": {
+    "node-env-run": "^3.0.2",
+    "npm-run-all": "^4.1.5",
+    "nodemon": "^2.0.4",
+    "pino-colada": "^2.0.1"
   }
 }
