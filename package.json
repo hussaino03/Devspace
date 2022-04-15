@@ -1,7 +1,7 @@
 {
   "name": "virtual-classroom",
   "version": "1.0.0",
-  "description": "",
+  "description": "<div id=\"top\"></div>\r <!--\r *** Thanks for checking out the Best-README-Template. If you have a suggestion\r *** that would make this better, please fork the repo and create a pull request\r *** or simply open an issue with the tag \"enhancement\".\r *** Don't forget to give the project a star!\r *** Thanks again! Now go create something AMAZING! :D\r -->",
   "main": "index.js",
   "scripts": {
     "start": "run-p \"server:start\" \"client:start\"",
@@ -29,5 +29,13 @@
     "npm-run-all": "^4.1.5",
     "nodemon": "^2.0.4",
     "pino-colada": "^2.0.1"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hussaino03/Devspace.git"
+  },
+  "bugs": {
+    "url": "https://github.com/hussaino03/Devspace/issues"
+  },
+  "homepage": "https://github.com/hussaino03/Devspace#readme"
 }
