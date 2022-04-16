@@ -76,6 +76,10 @@
 
 
 <!-- ABOUT THE PROJECT -->
+## Domain Name
+
+Our project's domain name is "virtual.study"
+
 ## Inspiration
 
 The inspiration for our project came from the fact that due to the implementation of remote learning, teachers all over the world had to interact with and teach their students virtually. Today, two major platforms namely Google Meet and Zoom dominate the virtual learning industry. However both platforms have shortcomings. Google Meet for example lacks the functionality of a built in collaborative whiteboard or annotation while a teacher is presenting. Zoom on the other hand has these functionalities but lacks the ease of access of google meet via a web browser. Our app aims to strike a combination of the features of Zoom and ease of access of Google Meet.
@@ -88,6 +92,10 @@ Virtual-Classroom is a web conferencing app that allows teachers to connect with
 
 Virtual-Classroom is a React app built using Twilio's programmable video and conversations SDK. The collaborative whiteboard functionality is implemented using the Data Track API.
 
+## Most Creative use of Twilio
+
+We use Twilio's Video SDK for JavaScript to enable users to stream data from their mic and camera via "tracks", these tracks can then be subscribed to by other users thus enabling sharing of video and audio. For low latency sharing of data between users required in the chat and reactions menu, we used Twilio's DataTrack API which is used to share reactions, chat messages as well as whiteboard pointer data. This allows for the users to react to other users, send them messages as well as work on a collaborative whiteboard.
+
 ### Features:
 * Interactive environment to learn (video calling and microphone option)
 * Whitebord (learning tool)
@@ -97,9 +105,8 @@ Virtual-Classroom is a React app built using Twilio's programmable video and con
 
 ### Built With
 
-* React.js
-* Next.js
-* HTML/CSS (Bootstrap)
+* HTML
+* CSS
 * JavaScript
 * Twilio 
 * Google Firebase
@@ -125,9 +132,10 @@ Virtual-Classroom is a React app built using Twilio's programmable video and con
 
 In the project directory, you can run:
 
-### `npm start`
-### `npm run server:start`
-### `npm run cient:start`
+## `npm install`
+This will install all the required modules
+## `npm start`
+This will start the server
 
 Runs the app in the development mode.\
 Open [http://localhost:1234](http://localhost:1234) to view it in your browser.
