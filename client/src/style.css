@@ -480,3 +480,50 @@ select {
   transform:translateY(-100%);
   transition: all .3s 1s ease-out;
 }
+
+.main-area {
+  display: flex;
+}
+.main-area .participants {
+  flex-grow: 1;
+}
+.main-area .chat {
+  width: 25%;
+  max-width: 300px;
+  min-width: 200px;
+  max-height: calc(100vh - 14rem);
+  background: #060606;
+  display: flex;
+  flex-direction: column;
+  padding: 1em;
+}
+.main-area .chat[hidden] {
+  display: none;
+}
+.main-area .chat .messages {
+  list-style-type: none;
+  flex-grow: 1;
+  overflow-y: scroll;
+  color: #fff;
+  padding: 0;
+  margin: 0 0 1em;
+}
+.main-area .chat .messages .author {
+  font-weight: bold;
+  margin: 0 0 0.25em;
+}
+.main-area .chat .messages .body {
+  margin: 0 0 0.5em;
+}
+
+.main-area form label {
+  color: #fff;
+  display: block;
+  margin-bottom: 0.5em;
+}
+.main-area input,
+.main-area button {
+  display: block;
+  width: 100%;
+  margin-bottom: 0.5em;
+}

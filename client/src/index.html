@@ -44,7 +44,19 @@
 
       <div class="video-chat" id="video-chat" hidden>
         <div id="activity" hidden></div>
-        <ul id="participants" class="participants"></ul>
+        <div class="main-area" id="videos-and-chat">
+          <ul id="participants" class="participants"></ul>
+          <div class="chat">
+            <ol class="messages"></ol>
+            <form>
+              <div>
+                <label for="new-message">Message:</label>
+                <input id="new-message" type="text" required />
+              </div>
+              <button type="submit">Send</button>
+            </form>
+          </div>
+        </div>
 
         <div class="live-controls">
           <div>
@@ -58,16 +70,7 @@
             <ul>
               <li><button>👍</button></li>
               <li><button>👎</button></li>
-              <li><button>⏪</button></li>
-              <li><button>⏩</button></li>
-              <li><button>☕️</button></li>
-              <li><button>😂</button></li>
-              <li><button>👏</button></li>
-              <li><button>❤️</button></li>
-              <li><button>⏰</button></li>
               <li><button>✋</button></li>
-              <li><button>🤦</button></li>
-              <li><button>🎉</button></li>
             </ul>
           </div>
         </div>
