@@ -33,13 +33,12 @@ export const handleSignOut = async()=>{
     await signOut(auth)
 }
 
-handleSignIn()
 onAuthStateChanged(auth, (user)=>{
     if (user !== null){
         console.log("Logged In user", user.email)
     }
     else{
-        console.log("No is Logged In user")
+        console.log("No Logged In user")
     }
     
 })
