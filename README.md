@@ -102,6 +102,7 @@ Virtual-Classroom is a React app built using Twilio's programmable video and con
 * HTML/CSS (Bootstrap)
 * JavaScript
 * Twilio 
+* Google Firebase
 
 
 <p align="right">(<a href="#top">back to top</a>)</p>
