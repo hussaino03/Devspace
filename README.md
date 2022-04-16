@@ -114,7 +114,7 @@ Virtual-Classroom is a React app built using Twilio's programmable video and con
 - [X] Integrate camera/mic option
 - [X] Integrate a whiteboard
 - [X] Integrate emojis
-- [X] Integrate disable/enable option for both video and microphone 
+- [X] Integrate disable/enable option for both the video and microphone 
 
 
 
