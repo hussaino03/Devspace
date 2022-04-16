@@ -61,6 +61,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
   previewBtn.addEventListener("click", async () => {
     hideElements(startDiv);
+    document.querySelector(".sign-in-btn").style.display = "none";
     try {
       const tracks = await Video.createLocalTracks({
         video: {
