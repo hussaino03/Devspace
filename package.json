@@ -26,8 +26,8 @@
   ],
   "devDependencies": {
     "node-env-run": "^3.0.2",
-    "npm-run-all": "^4.1.5",
     "nodemon": "^2.0.4",
+    "npm-run-all": "^4.1.5",
     "pino-colada": "^2.0.1"
   }
 }
