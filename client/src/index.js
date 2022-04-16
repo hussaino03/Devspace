@@ -8,6 +8,7 @@ import {
 } from "./lib/utils";
 import LocalPreview from "./lib/localPreview";
 import { Whiteboard } from "./lib/whiteboard";
+import { Chat } from "./lib/chat";
 
 let videoTrack,
   audioTrack,
@@ -16,7 +17,8 @@ let videoTrack,
   dataTrack,
   reactionListener,
   videoChat,
-  whiteboard;
+  whiteboard,
+  chat;
 
 const setupTrackListeners = (track, button, enableLabel, disableLabel) => {
   button.innerText = track.isEnabled ? disableLabel : enableLabel;
@@ -40,6 +42,8 @@ window.addEventListener("DOMContentLoaded", () => {
   const disableVideoBtn = document.getElementById("disable-video");
   const reactionsList = document.getElementById("reactions");
   const whiteboardBtn = document.getElementById("whiteboard");
+  const videoAndChat = document.getElementById("videos-and-chat");
+  const chatToggleBtn = document.getElementById("toggle-chat");
   const reactions = Array.from(reactionsList.querySelectorAll("button")).map(
     (btn) => btn.innerText
   );
@@ -176,6 +180,21 @@ window.addEventListener("DOMContentLoaded", () => {
       }
       enableButton(whiteboardBtn);
     });
+
+    chat = new Chat(videoAndChat, chatToggleBtn, identity);
+    chat.addEventListener("chat-message", (event) => {
+      const message = event.detail;
+      message.action = "chat-message";
+      videoChat.sendMessage(JSON.stringify(message));
+    });
+    chat.addEventListener("chat-focused", unlistenForSpaceBar);
+    chat.addEventListener("chat-blurred", listenForSpaceBar);
+    videoChat.addEventListener("chat-message", (event) => {
+      chat.receiveMessage(event.detail);
+    });
+    chatToggleBtn.addEventListener("click", () => {
+      chat.toggle();
+    });
   });
 
   disconnectBtn.addEventListener("click", () => {
@@ -190,6 +209,7 @@ window.addEventListener("DOMContentLoaded", () => {
       stopWhiteboard();
     }
     hideElements(videoChatDiv, reactionsList);
+    chat = chat.destroy();
     reactionsList.removeEventListener("click", reactionListener);
     localPreview.show();
     showElements(joinForm);
