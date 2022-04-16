@@ -107,6 +107,31 @@ Virtual-Classroom is a React app built using Twilio's programmable video and con
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 
+<!-- GETTING STARTED -->
+# Getting Started
+
+<!-- PREREQUISITES -->
+## Prerequisites
+* Install Desktop development with c++ workload on Visual studio
+* Git CLI
+
+## Installation
+* `git clone https://github.com/hussaino03/Devspace`
+* In project directory run `npm install`
+* Run `npm start`
+
+## Available Scripts
+
+In the project directory, you can run:
+
+### `npm start`
+### `npm run server:start`
+### `npm run cient:start`
+
+Runs the app in the development mode.\
+Open [http://localhost:1234](http://localhost:1234) to view it in your browser.
+
+<p align="right">(<a href="#top">back to top</a>)</p>
 
 <!-- ROADMAP -->
 ## Roadmap
