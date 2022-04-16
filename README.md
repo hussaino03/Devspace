@@ -76,6 +76,10 @@
 
 
 <!-- ABOUT THE PROJECT -->
+## Domain Name
+
+Our project's domain name is "virtual.study"
+
 ## Inspiration
 
 The inspiration for our project came from the fact that due to the implementation of remote learning, teachers all over the world had to interact with and teach their students virtually. Today, two major platforms namely Google Meet and Zoom dominate the virtual learning industry. However both platforms have shortcomings. Google Meet for example lacks the functionality of a built in collaborative whiteboard or annotation while a teacher is presenting. Zoom on the other hand has these functionalities but lacks the ease of access of google meet via a web browser. Our app aims to strike a combination of the features of Zoom and ease of access of Google Meet.
@@ -101,11 +105,11 @@ We use Twilio's Video SDK for JavaScript to enable users to stream data from the
 
 ### Built With
 
-* React.js
-* Next.js
-* HTML/CSS (Bootstrap)
+* HTML
+* CSS
 * JavaScript
-* Twilio 
+* Twilio Video SDK
+* Twilio DataTrack API 
 
 
 <p align="right">(<a href="#top">back to top</a>)</p>
@@ -128,9 +132,10 @@ We use Twilio's Video SDK for JavaScript to enable users to stream data from the
 
 In the project directory, you can run:
 
-### `npm start`
-### `npm run server:start`
-### `npm run cient:start`
+## `npm install`
+This will install all the required modules
+## `npm start`
+This will start the server
 
 Runs the app in the development mode.\
 Open [http://localhost:1234](http://localhost:1234) to view it in your browser.
