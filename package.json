@@ -13,8 +13,10 @@
   "author": "Phil Nash <philnash@twilio.com> (https://philna.sh)",
   "license": "MIT",
   "dependencies": {
+    "dotenv": "^16.0.0",
     "express": "^4.17.1",
     "express-pino-logger": "^5.0.0",
+    "firebase": "^9.6.11",
     "normalize.css": "^8.0.1",
     "parcel-bundler": "^1.12.4",
     "pino": "^6.3.2",
