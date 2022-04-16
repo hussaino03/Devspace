@@ -11,10 +11,10 @@
 
 <!-- PROJECT SHIELDS -->
 <!--
-*** I'm using markdown "reference style" links for readability.
-*** Reference links are enclosed in brackets [ ] instead of parentheses ( ).
+*** I'm using markdown "reference style" links for readability
+*** Reference links are enclosed in brackets [ ] instead of parentheses ( )
 *** See the bottom of this document for the declaration of the reference variables
-*** for contributors-url, forks-url, etc. This is an optional, concise syntax you may use.
+*** for contributors-url, forks-url, etc. This is an optional, concise syntax you may use
 *** https://www.markdownguide.org/basic-syntax/#reference-style-links
 -->
 [![Contributors][contributors-shield]][contributors-url]
@@ -89,7 +89,9 @@ Virtual-Classroom is a web conferencing app that allows teachers to connect with
 Virtual-Classroom is a React app built using Twilio's programmable video and conversations SDK. The collaborative whiteboard functionality is implemented using the Data Track API.
 
 ### Features:
-* TBD
+* Interactive environment to learn (video calling and microphone option)
+* Whitebord (learning tool)
+* Reactions (emojis)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -109,7 +111,10 @@ Virtual-Classroom is a React app built using Twilio's programmable video and con
 <!-- ROADMAP -->
 ## Roadmap
 
-- [] Add classroom page
+- [X] Integrate camera/mic option
+- [X] Integrate a whiteboard
+- [X] Integrate emojis
+- [X] Integrate disable/enable option for both the video and microphone 
 
 
 
@@ -143,10 +148,10 @@ Use this space to list resources you find helpful and would like to give credit 
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/BiaDd/hoohacks2022?color=%23&style=for-the-badge
-[contributors-url]: https://github.com/BiaDd/hoohacks2022/graphs/contributors
-[issues-shield]: https://img.shields.io/github/issues/BiaDd/hoohacks2022?style=for-the-badge
-[issues-url]: https://github.com/BiaDd/hoohacks2022/issues
+[contributors-shield]: https://img.shields.io/github/contributors/hussaino03/Devspace?color=%23&style=for-the-badge
+[contributors-url]: https://github.com/hussaino03/Devspace/graphs/contributors
+[issues-shield]: https://img.shields.io/github/issues/hussaino03/Devspace?style=for-the-badge
+[issues-url]: https://github.com/hussaino03/Devspace/issues
 [license-shield]: https://img.shields.io/github/license/othneildrew/Best-README-Template.svg?style=for-the-badge
-[license-url]: https://github.com/BiaDd/hoohacks2022/blob/main/LICENSE.txt
+[license-url]: https://github.com/hussaino03/Devspace/blob/main/LICENSE.txt
 [product-screenshot]: loginpage.png
