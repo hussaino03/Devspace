@@ -5,10 +5,63 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Virtual Classroom</title>
     <link href="./style.css" rel="stylesheet" />
+    <link href="./auth.css" rel="stylesheet" />
   </head>
   <body>
-    <header><h1>Virtual Classroom</h1></header>
+    <header>
+      <h1>Virtual Classroom</h1>
+    </header>
 
+    
+    <!-- Sign Up Section/Page -->
+    <section class="auth sign-up">
+      <form class="auth-form" action="">
+          <p>Sign Up</p>
+          <div>
+              <label for="name">Name</label>
+              <input type="text" name="name" required>
+          </div>
+          <div>
+              <label for="email">Email</label>
+              <input type="text" name="email" required>
+          </div>
+          <div>
+              <label for="password">Password</label>
+              <input type="password" required>
+          </div>
+          <div>
+              <input type="submit" value="Sign Up">
+          </div>
+          <div class="mid">
+              <span>Already a user? <span class="login-route">LOGIN</span></span>
+          </div>
+      </form>
+    </section>
+
+    <!-- Sign Ip Section/Page -->
+    <section class="auth sign-in">
+      <form class="auth-form" action="">
+          <p>Sign In</p>
+          <div>
+              <label for="email">Email</label>
+              <input type="text" name="email" required>
+          </div>
+          <div>
+              <label for="password">Password</label>
+              <input type="password" required>
+          </div>
+          <div>
+              <input type="submit" value="Sign In">
+          </div>
+          <div class="mid">
+              <span>Not a user? <span class="signup-route">Sign Up</span></span>
+          </div>
+      </form>
+    </section>
+
+
+
+  <!-- Main Page -->
     <main>
       <div class="loader-wrapper">
         <div class="loader"></div>
@@ -17,6 +70,9 @@
       </div>
       <div class="start card">
         <button id="media-preview">Preview camera and microphone</button>
+      </div>
+      <div class="sign-in-btn">
+        <p class="btn">Sign In</p>
       </div>
 
       
@@ -75,5 +131,6 @@
     </main>
     <script src="./index.js"></script>
     <script src="./firebase/auth.js"></script>
+    <script src="./firebase/authRouting.js"></script>
   </body>
 </html>
