@@ -3,79 +3,17 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Virtual Classroom</title>
+    <title>Video Collaboration</title>
     <link href="./style.css" rel="stylesheet" />
-    <link href="./auth.css" rel="stylesheet" />
   </head>
   <body>
-    <header>
-      <h1>Virtual Classroom</h1>
-    </header>
+    <header><h1>Video Collaboration</h1></header>
 
-    
-    <!-- Sign Up Section/Page -->
-    <section class="auth sign-up">
-      <form class="auth-form" action="">
-          <p>Sign Up</p>
-          <div>
-              <label for="name">Name</label>
-              <input type="text" name="name" required>
-          </div>
-          <div>
-              <label for="email">Email</label>
-              <input type="text" name="email" required>
-          </div>
-          <div>
-              <label for="password">Password</label>
-              <input type="password" required>
-          </div>
-          <div>
-              <input type="submit" value="Sign Up">
-          </div>
-          <div class="mid">
-              <span>Already a user? <span class="login-route">LOGIN</span></span>
-          </div>
-      </form>
-    </section>
-
-    <!-- Sign Ip Section/Page -->
-    <section class="auth sign-in">
-      <form class="auth-form" action="">
-          <p>Sign In</p>
-          <div>
-              <label for="email">Email</label>
-              <input type="text" name="email" required>
-          </div>
-          <div>
-              <label for="password">Password</label>
-              <input type="password" required>
-          </div>
-          <div>
-              <input type="submit" value="Sign In">
-          </div>
-          <div class="mid">
-              <span>Not a user? <span class="signup-route">Sign Up</span></span>
-          </div>
-      </form>
-    </section>
-
-
-
-  <!-- Main Page -->
     <main>
-      <div class="loader-wrapper">
-        <div class="loader"></div>
-        <div class="loader-section section-left"></div>
-        <div class="loader-section section-right"></div>
-      </div>
       <div class="start card">
         <button id="media-preview">Preview camera and microphone</button>
       </div>
-      <div class="sign-in-btn">
-        <p class="btn">Sign In</p>
-      </div>
 
-      
       <div id="local-preview" class="card local-preview" hidden>
         <div id="video-preview" class="video-preview"></div>
         <canvas id="audio-data" width="300" height="100"></canvas>
@@ -84,19 +22,19 @@
           <div id="mic-selector" class="media-select"></div>
         </div>
 
-      <form action="/tokens" method="POST" id="join-room" hidden>
-        <h2>Join room</h2>
-        <div class="form-input">
-          <label for="identity">Name</label>
-          <input type="text" name="identity" id="identity" />
-        </div>
-        <div class="form-input">
-          <label for="roomName">Room</label>
-          <input type="text" name="roomName" id="roomName" />
-        </div>
-        <button type="submit">Join room</button>
-      </form>
-    </div>
+        <form action="/tokens" method="POST" id="join-room" hidden>
+          <h2>Join room</h2>
+          <div class="form-input">
+            <label for="identity">Name</label>
+            <input type="text" name="identity" id="identity" />
+          </div>
+          <div class="form-input">
+            <label for="roomName">Room</label>
+            <input type="text" name="roomName" id="roomName" />
+          </div>
+          <button type="submit">Join room</button>
+        </form>
+      </div>
 
       <div class="video-chat" id="video-chat" hidden>
         <div id="activity" hidden></div>
@@ -113,27 +51,18 @@
             </form>
           </div>
         </div>
-
-        <div class="live-controls">
+        <div class="live-controls" id="live-controls">
           <div>
             <button id="mute-self">Mute</button>
             <button id="disable-video">Disable video</button>
-            <button id="screen-share">Share screen</button>
+            <button id="toggle-chat">Toggle chat</button>
             <button id="whiteboard">Start whiteboard</button>
+            <button id="screen-share">Share screen</button>
             <button id="disconnect">Disconnect</button>
-          </div>
-          <div id="reactions">
-            <ul>
-              <li><button>👍</button></li>
-              <li><button>👎</button></li>
-              <li><button>✋</button></li>
-            </ul>
           </div>
         </div>
       </div>
     </main>
     <script src="./index.js"></script>
-    <script src="./firebase/auth.js"></script>
-    <script src="./firebase/authRouting.js"></script>
   </body>
 </html>

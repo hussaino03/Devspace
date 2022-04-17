@@ -1,3 +1,5 @@
+import { showElements, hideElements } from "./utils";
+
 const isTouchSupported = "ontouchstart" in window;
 const isPointerSupported = navigator.pointerEnabled;
 const downEvent = isTouchSupported
@@ -17,6 +19,7 @@ const upEvent = isTouchSupported
   : "mouseup";
 
 const colours = [
+  { name: "white", value: "#ffffff", checked: true },
   { name: "black", value: "#000000", checked: true },
   { name: "red", value: "#f22f46", checked: false },
   { name: "purple", value: "#663399", checked: false },
@@ -30,6 +33,8 @@ const brushes = [
   { name: "small", value: 10, checked: false },
   { name: "medium", value: 30, checked: true },
   { name: "large", value: 60, checked: false },
+  { name: "x-large", value: 80, checked: false },
+  { name: "big-chungus", value: 120, checked: false }
 ];
 
 const buildRadioButton = (name, options) => {
@@ -85,7 +90,7 @@ export class Whiteboard extends EventTarget {
     this.canvas = document.createElement("canvas");
     this.canvas.classList.add("whiteboard-canvas");
     this.canvas.width = 4000;
-    this.canvas.height = 3000;
+    this.canvas.height = 1000;
     this.context = this.canvas.getContext("2d");
     this.context.fillStyle = "#ffffff";
     this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
@@ -105,6 +110,7 @@ export class Whiteboard extends EventTarget {
     this.container.appendChild(this.wrapper);
     this.setRatios();
     this.drawOnCanvas = this.drawOnCanvas.bind(this);
+    showElements(this.container);
   }
 
   currentColour() {
@@ -174,9 +180,14 @@ export class Whiteboard extends EventTarget {
   }
 
   destroy() {
+    this.canvas.removeEventListener(downEvent, this.startDrawing);
+    this.canvas.removeEventListener(moveEvent, this.draw);
+    this.canvas.removeEventListener(upEvent, this.endDrawing);
     this.canvas.remove();
     this.wrapper.remove();
+    hideElements(this.container);
     this.lines = [];
+    return null;
   }
 
   setRatios() {

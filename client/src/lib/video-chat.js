@@ -1,39 +1,41 @@
 import Video from "twilio-video";
+import { allowedReactions } from "./reactions";
 import { showElements, hideElements } from "./utils";
 
 export class VideoChat extends EventTarget {
-  constructor(token, roomName, localTracks, allowedReactions) {
+  constructor(token, roomName, localTracks) {
     super();
     this.videoTrack = localTracks.videoTrack;
     this.audioTrack = localTracks.audioTrack;
     this.dataTrack = localTracks.dataTrack;
-    this.reactions = allowedReactions;
+    this.dataTrackReady = {};
+    this.dataTrackReady.promise = new Promise((resolve, reject) => {
+      this.dataTrackReady.resolve = resolve;
+      this.dataTrackReady.reject = reject;
+    });
     this.container = document.getElementById("participants");
-    this.screenDiv = document.getElementById("activity");
     this.chatDiv = document.getElementById("video-chat");
+    this.activityDiv = document.getElementById("activity");
     this.dominantSpeaker = null;
+    this.whiteboard = false;
     this.participantItems = new Map();
     this.participantConnected = this.participantConnected.bind(this);
     this.participantDisconnected = this.participantDisconnected.bind(this);
     this.trackPublished = this.trackPublished.bind(this);
     this.trackUnpublished = this.trackUnpublished.bind(this);
     this.trackSubscribed = this.trackSubscribed.bind(this);
-    this.trackUnsubcribed = this.trackUnsubcribed.bind(this);
-    this.messageReceived = this.messageReceived.bind(this);
+    this.trackUnsubscribed = this.trackUnsubscribed.bind(this);
     this.roomDisconnected = this.roomDisconnected.bind(this);
     this.dominantSpeakerChanged = this.dominantSpeakerChanged.bind(this);
     this.localParticipantTrackPublished = this.localParticipantTrackPublished.bind(
       this
     );
+    this.localParticipantTrackPublicationFailed = this.localParticipantTrackPublicationFailed.bind(
+      this
+    );
+    this.messageReceived = this.messageReceived.bind(this);
     this.tidyUp = this.tidyUp.bind(this);
     this.init(token, roomName);
-  }
-
-  whiteboardStarted(whiteboard) {
-    this.whiteboard = whiteboard;
-  }
-  whiteboardStopped() {
-    this.whiteboard = null;
   }
 
   async init(token, roomName) {
@@ -53,6 +55,11 @@ export class VideoChat extends EventTarget {
         "trackPublished",
         this.localParticipantTrackPublished
       );
+      this.room.localParticipant.on(
+        "trackPublicationFailed",
+        this.localParticipantTrackPublicationFailed
+      );
+      this.room.on("trackMessage", this.messageReceived);
       window.addEventListener("beforeunload", this.tidyUp);
       window.addEventListener("pagehide", this.tidyUp);
     } catch (error) {
@@ -85,20 +92,8 @@ export class VideoChat extends EventTarget {
         this.trackSubscribed(participant)(trackPub.track);
       }
       trackPub.on("subscribed", this.trackSubscribed(participant));
-      trackPub.on("unsubscribed", this.trackUnsubcribed(participant));
+      trackPub.on("unsubscribed", this.trackUnsubscribed(participant));
     };
-  }
-
-  localParticipantTrackPublished(track) {
-    if (track.kind === "data") {
-      const dataTrackPublishedEvent = new CustomEvent("data-track-published", {
-        detail: {
-          track,
-          participant: this.room.localParticipant,
-        },
-      });
-      this.dispatchEvent(dataTrackPublishedEvent);
-    }
   }
 
   trackSubscribed(participant) {
@@ -106,89 +101,69 @@ export class VideoChat extends EventTarget {
       const item = this.participantItems.get(participant.sid);
       const wrapper = item.querySelector(".video-wrapper");
       const info = item.querySelector(".info");
-      const muteBtn = item.querySelector(".actions button");
       if (track.kind === "video") {
         const videoElement = track.attach();
         if (track.name === "user-screen") {
           this.chatDiv.classList.add("screen-share");
-          this.screenDiv.appendChild(videoElement);
-          showElements(this.screenDiv);
-          const screenShareEvent = new Event("screen-share-started");
-          this.dispatchEvent(screenShareEvent);
+          this.activityDiv.appendChild(videoElement);
+          showElements(this.activityDiv);
+          if (participant !== this.room.localParticipant) {
+            this.dispatchEvent(new Event("screen-share-started"));
+          }
         } else {
           wrapper.appendChild(videoElement);
         }
       } else if (track.kind === "audio") {
         const audioElement = track.attach();
+        audioElement.muted = true;
         wrapper.appendChild(audioElement);
         const mutedHTML = document.createElement("p");
         mutedHTML.appendChild(document.createTextNode("🔇"));
         if (!track.isEnabled) {
-          if (muteBtn) {
-            muteBtn.innerText = "Unmute";
-          }
           info.appendChild(mutedHTML);
         }
         track.on("enabled", () => {
-          if (muteBtn) {
-            muteBtn.innerText = "Mute";
-          }
           mutedHTML.remove();
         });
         track.on("disabled", () => {
-          if (muteBtn) {
-            muteBtn.innerText = "Unmute";
-          }
           info.appendChild(mutedHTML);
         });
       } else if (track.kind === "data") {
-        if (participant !== this.room.localParticipant) {
-          const mute = item.querySelector(".actions button");
-          mute.addEventListener("click", () => {
-            const action = mute.innerText.toLowerCase();
-            if (["mute", "unmute"].includes(action)) {
-              const message = JSON.stringify({
-                action,
-                participantSid: participant.sid,
-              });
-              this.dataTrack.send(message);
-            }
-          });
-          if (this.whiteboard) {
-            const message = JSON.stringify({
+        if (this.whiteboard) {
+          this.sendMessage(
+            JSON.stringify({
               action: "whiteboard",
               event: "started",
-              existingLines: this.whiteboard.lines,
-            });
-            this.dataTrack.send(message);
-          }
+            })
+          );
         }
-        const reactionDiv = document.createElement("div");
-        reactionDiv.classList.add("reaction");
-        wrapper.appendChild(reactionDiv);
-        track.on("message", this.messageReceived(participant));
       }
     };
   }
 
-  trackUnsubcribed(participant) {
+  trackUnsubscribed(participant) {
     return (track) => {
       if (track.kind !== "data") {
         const mediaElements = track.detach();
         mediaElements.forEach((mediaElement) => mediaElement.remove());
-        if (track.name === "user-screen") {
-          hideElements(this.screenDiv);
-          this.chatDiv.classList.remove("screen-share");
-          const screenShareEvent = new Event("screen-share-stopped");
-          this.dispatchEvent(screenShareEvent);
+      }
+      if (track.name === "user-screen") {
+        hideElements(this.activityDiv);
+        this.chatDiv.classList.remove("screen-share");
+        if (participant !== this.room.localParticipant) {
+          this.dispatchEvent(new Event("screen-share-stopped"));
         }
+      }
+      if (track.kind === "audio") {
+        track.removeAllListeners("enabled");
+        track.removeAllListeners("disabled");
       }
     };
   }
 
   trackUnpublished(trackPub) {
     if (trackPub.track) {
-      this.trackUnscribed(trackPub.track);
+      this.trackUnsubscribed()(trackPub.track);
     }
   }
 
@@ -200,13 +175,13 @@ export class VideoChat extends EventTarget {
     const info = document.createElement("div");
     info.classList.add("info");
     wrapper.appendChild(info);
+    const reaction = document.createElement("div");
+    reaction.classList.add("reaction");
+    wrapper.appendChild(reaction);
     participantItem.appendChild(wrapper);
     if (participant !== this.room.localParticipant) {
       const actions = document.createElement("div");
       actions.classList.add("actions");
-      const mute = document.createElement("button");
-      mute.appendChild(document.createTextNode("mute"));
-      actions.appendChild(mute);
       wrapper.appendChild(actions);
       const name = document.createElement("p");
       name.classList.add("name");
@@ -228,79 +203,6 @@ export class VideoChat extends EventTarget {
     this.setRowsAndColumns(this.room);
   }
 
-  messageReceived(participant) {
-    const participantItem = this.participantItems.get(participant.sid);
-    const reactionDiv = participantItem.querySelector(".reaction");
-    let reactionCount = 0;
-    let timeout;
-    return (message) => {
-      const data = JSON.parse(message);
-      if (
-        data.action === "reaction" &&
-        this.reactions.includes(data.reaction)
-      ) {
-        const reaction = data.reaction;
-        if (timeout) {
-          clearTimeout(timeout);
-        }
-        if (reactionDiv.innerText === reaction) {
-          if (reactionCount < 5) {
-            reactionDiv.classList.remove(`size-${reactionCount}`);
-            reactionCount += 1;
-            reactionDiv.classList.add(`size-${reactionCount}`);
-          }
-        } else {
-          reactionDiv.innerText = reaction;
-          reactionDiv.classList.remove(`size-${reactionCount}`);
-          reactionCount = 1;
-          reactionDiv.classList.add(`size-${reactionCount}`);
-        }
-        timeout = setTimeout(() => {
-          reactionDiv.innerText = "";
-          reactionDiv.classList.remove(`size-${reactionCount}`);
-          reactionCount = 0;
-        }, 5000);
-      } else if (
-        data.action === "mute" &&
-        this.room.localParticipant.sid === data.participantSid &&
-        this.audioTrack.isEnabled
-      ) {
-        this.audioTrack.disable();
-      } else if (
-        data.action === "unmute" &&
-        this.room.localParticipant.sid === data.participantSid &&
-        !this.audioTrack.isEnabled
-      ) {
-        this.audioTrack.enable();
-      } else if (data.action === "whiteboard") {
-        if (data.event === "started") {
-          const whiteboardStartedEvent = new CustomEvent("whiteboard-started", {
-            detail: data.existingLines,
-          });
-          this.dispatchEvent(whiteboardStartedEvent);
-        } else if (data.event === "stopped") {
-          const whiteboardStoppedEvent = new Event("whiteboard-stopped");
-          this.dispatchEvent(whiteboardStoppedEvent);
-        } else {
-          const whiteboardDrawEvent = new CustomEvent("whiteboard-draw", {
-            detail: data.event,
-          });
-          this.dispatchEvent(whiteboardDrawEvent);
-        }
-      }
-    };
-  }
-
-  startScreenShare(track) {
-    this.room.localParticipant.publishTrack(track);
-  }
-
-  stopScreenShare(track) {
-    if (this.room) {
-      this.room.localParticipant.unpublishTrack(track);
-    }
-  }
-
   roomDisconnected(room, error) {
     if (error) {
       console.error(error);
@@ -309,11 +211,24 @@ export class VideoChat extends EventTarget {
       item.remove();
       this.participantItems.delete(sid);
     });
+    this.room.removeAllListeners();
+    this.room.localParticipant.off(
+      "trackPublished",
+      this.localParticipantTrackPublished
+    );
+    this.room.localParticipant.off(
+      "trackPublicationFailed",
+      this.localParticipantTrackPublicationFailed
+    );
+    this.audioTrack.removeAllListeners("enabled");
+    this.audioTrack.removeAllListeners("disabled");
     this.room = null;
   }
 
   disconnect() {
     this.room.disconnect();
+    window.removeEventListener("beforeunload", this.tidyUp);
+    window.removeEventListener("pagehide", this.tidyUp);
   }
 
   tidyUp(event) {
@@ -321,8 +236,7 @@ export class VideoChat extends EventTarget {
       return;
     }
     if (this.room) {
-      this.room.disconnect();
-      this.room = null;
+      this.disconnect();
     }
   }
 
@@ -348,5 +262,88 @@ export class VideoChat extends EventTarget {
     }
     this.container.style.setProperty("--grid-rows", rows);
     this.container.style.setProperty("--grid-columns", cols);
+  }
+
+
+  startScreenShare(screenTrack) {
+    this.room.localParticipant.publishTrack(screenTrack);
+  }
+
+  stopScreenShare(screenTrack) {
+    this.room.localParticipant.unpublishTrack(screenTrack);
+    this.chatDiv.classList.remove("screen-share");
+    hideElements(this.activityDiv);
+  }  
+
+  localParticipantTrackPublished(trackPub) {
+    if (trackPub.track === this.dataTrack) {
+      this.dataTrackReady.resolve();
+    }
+  }
+  localParticipantTrackPublicationFailed(error, trackPub) {
+    if (trackPub.track === this.dataTrack) {
+      this.dataTrackReady.reject(error);
+    }
+  }
+
+  async sendMessage(message) {
+    await this.dataTrackReady.promise;
+    this.dataTrack.send(message);
+  }
+
+  messageReceived(data, track, participant) {
+    const message = JSON.parse(data);
+    if (message.action === "reaction") {
+      this.showReaction(message.reaction, participant);
+    } else if (message.action === "chat-message") {
+      this.receiveChatMessage(message);
+    } else if (message.action === "whiteboard") {
+      this.receiveWhiteboardMessage(message);
+    }
+  }
+
+  showReaction(reaction, participant) {
+    if (!allowedReactions.includes(reaction)) {
+      return;
+    }
+    let participantItem;
+    if (participant) {
+      participantItem = this.participantItems.get(participant.sid);
+    } else {
+      participantItem = this.participantItems.get(
+        this.room.localParticipant.sid
+      );
+    }
+    const reactionDiv = participantItem.querySelector(".reaction");
+    reactionDiv.innerHTML = "";
+    reactionDiv.appendChild(document.createTextNode(reaction));
+    if (this.reactionTimeout) {
+      clearTimeout(this.reactionTimeout);
+    }
+    this.reactionTimeout = setTimeout(() => (reactionDiv.innerHTML = ""), 5000);
+  }
+
+  receiveChatMessage(message) {
+    const messageEvent = new CustomEvent("chat-message", {
+      detail: message,
+    });
+    this.dispatchEvent(messageEvent);
+  }
+
+  receiveWhiteboardMessage(message) {
+    if (message.event === "started") {
+      const whiteboardStartedEvent = new CustomEvent("whiteboard-started", {
+        detail: message.existingLines,
+      });
+      this.dispatchEvent(whiteboardStartedEvent);
+    } else if (message.event === "stopped") {
+      const whiteboardStoppedEvent = new Event("whiteboard-stopped");
+      this.dispatchEvent(whiteboardStoppedEvent);
+    } else {
+      const whiteboardDrawEvent = new CustomEvent("whiteboard-draw", {
+        detail: message.event,
+      });
+      this.dispatchEvent(whiteboardDrawEvent);
+    }
   }
 }

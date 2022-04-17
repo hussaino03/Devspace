@@ -1,24 +1,26 @@
-import Video, { LocalVideoTrack, LocalDataTrack } from "twilio-video";
-import { VideoChat } from "./lib/video-chat";
 import {
-  hideElements,
-  showElements,
-  disableButton,
-  enableButton,
-} from "./lib/utils";
+  createLocalTracks,
+  LocalDataTrack,
+  LocalVideoTrack,
+  LocalAudioTrack,
+} from "twilio-video";
+import { VideoChat } from "./lib/video-chat";
+import { hideElements, showElements } from "./lib/utils";
 import LocalPreview from "./lib/localPreview";
-import { Whiteboard } from "./lib/whiteboard";
+import { Reactions } from "./lib/reactions";
 import { Chat } from "./lib/chat";
+import { Whiteboard } from "./lib/whiteboard";
+import { ScreenSharer } from "./lib/screen-sharer";
 
 let videoTrack,
   audioTrack,
   localPreview,
-  screenTrack,
-  dataTrack,
-  reactionListener,
   videoChat,
+  dataTrack,
+  reactions,
+  chat,
   whiteboard,
-  chat;
+  screenSharer;
 
 const setupTrackListeners = (track, button, enableLabel, disableLabel) => {
   button.innerText = track.isEnabled ? disableLabel : enableLabel;
@@ -30,40 +32,84 @@ const setupTrackListeners = (track, button, enableLabel, disableLabel) => {
   });
 };
 
+const removeTrackListeners = (track) => {
+  track.removeAllListeners("enabled");
+  track.removeAllListeners("disabled");
+};
+
 window.addEventListener("DOMContentLoaded", () => {
   const previewBtn = document.getElementById("media-preview");
   const startDiv = document.querySelector(".start");
   const videoChatDiv = document.getElementById("video-chat");
-  const activityDiv = document.getElementById("activity");
   const joinForm = document.getElementById("join-room");
   const disconnectBtn = document.getElementById("disconnect");
   const screenShareBtn = document.getElementById("screen-share");
   const muteBtn = document.getElementById("mute-self");
   const disableVideoBtn = document.getElementById("disable-video");
-  const reactionsList = document.getElementById("reactions");
-  const whiteboardBtn = document.getElementById("whiteboard");
+  const liveControls = document.getElementById("live-controls");
   const videoAndChat = document.getElementById("videos-and-chat");
   const chatToggleBtn = document.getElementById("toggle-chat");
-  const reactions = Array.from(reactionsList.querySelectorAll("button")).map(
-    (btn) => btn.innerText
-  );
+  const whiteboardBtn = document.getElementById("whiteboard");
+  const activity = document.getElementById("activity");
 
-  const detachTrack = (track) => {
-    if (track.kind !== "data") {
-      const mediaElements = track.detach();
-      mediaElements.forEach((mediaElement) => mediaElement.remove());
-      if (track.name === "user-screen") {
-        hideElements(activityDiv);
-        videoChatDiv.classList.remove("screen-share");
-      }
+  const toggleChat = () => {
+    if (chat) {
+      chat.toggle();
     }
+  };
+
+  const toggleWhiteboard = () => {
+    if (whiteboard && videoChat) {
+      videoChat.sendMessage(
+        JSON.stringify({
+          action: "whiteboard",
+          event: "stopped",
+        })
+      );
+      stopWhiteboard();
+    } else {
+      videoChat.sendMessage(
+        JSON.stringify({
+          action: "whiteboard",
+          event: "started",
+        })
+      );
+      startWhiteboard();
+    }
+  };
+  
+  const receiveDrawEvent = (event) => {
+    videoChat.sendMessage(
+      JSON.stringify({
+        action: "whiteboard",
+        event: event.detail,
+      })
+    );
+  };
+
+  const startWhiteboard = () => {
+    whiteboard = new Whiteboard(activity);
+    whiteboard.addEventListener("draw", receiveDrawEvent);
+    videoChat.whiteboard = true;
+    videoChatDiv.classList.add("screen-share");
+    whiteboardBtn.innerText = "Stop whiteboard";
+  };
+
+  const stopWhiteboard = () => {
+    if (!whiteboard) {
+      return;
+    }
+    whiteboard.removeEventListener("draw", receiveDrawEvent);
+    whiteboard = whiteboard.destroy();
+    videoChat.whiteboard = false;
+    videoChatDiv.classList.remove("screen-share");
+    whiteboardBtn.innerText = "Start whiteboard";
   };
 
   previewBtn.addEventListener("click", async () => {
     hideElements(startDiv);
-    document.querySelector(".sign-in-btn").style.display = "none";
     try {
-      const tracks = await Video.createLocalTracks({
+      const tracks = await createLocalTracks({
         video: {
           name: "user-camera",
           facingMode: "user",
@@ -76,7 +122,6 @@ window.addEventListener("DOMContentLoaded", () => {
       showElements(joinForm);
       videoTrack = tracks.find((track) => track.kind === "video");
       audioTrack = tracks.find((track) => track.kind === "audio");
-      dataTrack = new LocalDataTrack({ name: "user-data" });
 
       setupTrackListeners(audioTrack, muteBtn, "Unmute", "Mute");
       setupTrackListeners(
@@ -111,7 +156,7 @@ window.addEventListener("DOMContentLoaded", () => {
     const inputs = joinForm.querySelectorAll("input");
     const data = {};
     inputs.forEach((input) => (data[input.getAttribute("name")] = input.value));
-    const { token, identity, roomName } = await fetch(
+    const { token, roomName, identity } = await fetch(
       joinForm.getAttribute("action"),
       {
         method: joinForm.getAttribute("method"),
@@ -122,66 +167,35 @@ window.addEventListener("DOMContentLoaded", () => {
       }
     ).then((res) => res.json());
     hideElements(joinForm);
-    videoChat = new VideoChat(
-      token,
-      roomName,
-      { videoTrack, audioTrack, dataTrack },
-      reactions
-    );
+    dataTrack = new LocalDataTrack();
+    videoTrack = new LocalVideoTrack(videoTrack.mediaStreamTrack, {
+      name: "user-camera",
+    });
+    audioTrack = new LocalAudioTrack(audioTrack.mediaStreamTrack, {
+      name: "user-audio",
+    });
+    videoChat = new VideoChat(token, roomName, {
+      videoTrack,
+      audioTrack,
+      dataTrack,
+    });
     if (!("getDisplayMedia" in navigator.mediaDevices)) {
       screenShareBtn.remove();
     }
     showElements(videoChatDiv);
     localPreview.hide();
-
-    videoChat.addEventListener("data-track-published", (event) => {
-      const localParticipant = event.detail.participant;
-      showElements(reactionsList);
-      const showReaction = videoChat.messageReceived(localParticipant);
-      reactionListener = (event) => {
-        if (
-          event.target.nodeName === "BUTTON" &&
-          reactions.includes(event.target.innerText)
-        ) {
-          const message = JSON.stringify({
-            action: "reaction",
-            reaction: event.target.innerText,
-          });
-          dataTrack.send(message);
-          showReaction(message);
-        }
-      };
-      reactionsList.addEventListener("click", reactionListener);
-
-      whiteboardBtn.removeAttribute("hidden");
-    });
-
-    videoChat.addEventListener("whiteboard-started", (event) => {
-      startWhiteboard(event.detail);
-    });
-
-    videoChat.addEventListener("whiteboard-stopped", () => {
-      stopWhiteboard();
-    });
-
-    videoChat.addEventListener("whiteboard-draw", (event) => {
-      whiteboard.drawOnCanvas(event.detail);
-      whiteboard.saveLine(event.detail);
-    });
-
+    screenSharer = new ScreenSharer(screenShareBtn, videoChat);
     videoChat.addEventListener("screen-share-started", () => {
-      if (screenShareBtn && !screenTrack) {
-        disableButton(screenShareBtn);
-      }
-      disableButton(whiteboardBtn);
+      screenSharer.disable();
     });
-    videoChat.addEventListener("screen-share-stopped", () => {
-      if (screenShareBtn) {
-        enableButton(screenShareBtn);
-      }
-      enableButton(whiteboardBtn);
+    videoChat.addEventListener("screen-share-stopped", screenSharer.enable);
+    reactions = new Reactions(liveControls);
+    reactions.addEventListener("reaction", (event) => {
+      videoChat.sendMessage(
+        JSON.stringify({ action: "reaction", reaction: event.detail })
+      );
+      videoChat.showReaction(event.detail);
     });
-
     chat = new Chat(videoAndChat, chatToggleBtn, identity);
     chat.addEventListener("chat-message", (event) => {
       const message = event.detail;
@@ -193,8 +207,21 @@ window.addEventListener("DOMContentLoaded", () => {
     videoChat.addEventListener("chat-message", (event) => {
       chat.receiveMessage(event.detail);
     });
-    chatToggleBtn.addEventListener("click", () => {
-      chat.toggle();
+    chatToggleBtn.addEventListener("click", toggleChat);
+
+    whiteboardBtn.addEventListener("click", toggleWhiteboard);
+
+    videoChat.addEventListener("whiteboard-started", () => {
+      startWhiteboard();
+    });
+
+    videoChat.addEventListener("whiteboard-stopped", () => {
+      stopWhiteboard();
+    });
+
+    videoChat.addEventListener("whiteboard-draw", (event) => {
+      whiteboard.drawOnCanvas(event.detail);
+      whiteboard.saveLine(event.detail);
     });
   });
 
@@ -202,66 +229,18 @@ window.addEventListener("DOMContentLoaded", () => {
     if (!videoChat) {
       return;
     }
+    [videoTrack, audioTrack, dataTrack].forEach(removeTrackListeners);
+    screenSharer = screenSharer.destroy();
     videoChat.disconnect();
-    if (screenTrack) {
-      stopScreenSharing();
-    }
-    if (whiteboard) {
-      stopWhiteboard();
-    }
-    hideElements(videoChatDiv, reactionsList);
+    reactions = reactions.destroy();
     chat = chat.destroy();
-    reactionsList.removeEventListener("click", reactionListener);
+    chatToggleBtn.removeEventListener("click", toggleChat);
+    whiteboardBtn.removeEventListener("click", toggleWhiteboard);
+    stopWhiteboard();
+    hideElements(videoChatDiv);
     localPreview.show();
     showElements(joinForm);
     videoChat = null;
-  });
-
-  const stopScreenSharing = () => {
-    detachTrack(screenTrack);
-    videoChat.stopScreenShare(screenTrack);
-    screenTrack.stop();
-    screenTrack = null;
-    screenShareBtn.innerText = "Share screen";
-    enableButton(whiteboardBtn);
-  };
-
-  screenShareBtn.addEventListener("click", async () => {
-    if (screenTrack) {
-      stopScreenSharing();
-    } else {
-      try {
-        const screenStream = await navigator.mediaDevices.getDisplayMedia();
-        const track = screenStream.getTracks()[0];
-        screenTrack = new LocalVideoTrack(track, {
-          name: "user-screen",
-        });
-        videoChat.startScreenShare(screenTrack);
-        track.addEventListener("ended", stopScreenSharing);
-        screenShareBtn.innerText = "Stop sharing";
-        disableButton(whiteboardBtn);
-      } catch (error) {
-        console.error(error);
-      }
-    }
-  });
-
-  whiteboardBtn.addEventListener("click", () => {
-    if (whiteboard) {
-      stopWhiteboard();
-      const message = JSON.stringify({
-        action: "whiteboard",
-        event: "stopped",
-      });
-      dataTrack.send(message);
-    } else {
-      startWhiteboard();
-      const message = JSON.stringify({
-        action: "whiteboard",
-        event: "started",
-      });
-      dataTrack.send(message);
-    }
   });
 
   const unMuteOnSpaceBarDown = (event) => {
@@ -276,15 +255,23 @@ window.addEventListener("DOMContentLoaded", () => {
     }
   };
 
+  const listenForSpaceBar = () => {
+    document.addEventListener("keydown", unMuteOnSpaceBarDown);
+    document.addEventListener("keyup", muteOnSpaceBarUp);
+  };
+
+  const unlistenForSpaceBar = () => {
+    document.removeEventListener("keydown", unMuteOnSpaceBarDown);
+    document.removeEventListener("keyup", muteOnSpaceBarUp);
+  };
+
   muteBtn.addEventListener("click", () => {
     if (audioTrack.isEnabled) {
       audioTrack.disable();
-      document.addEventListener("keydown", unMuteOnSpaceBarDown);
-      document.addEventListener("keyup", muteOnSpaceBarUp);
+      listenForSpaceBar();
     } else {
       audioTrack.enable();
-      document.removeEventListener("keydown", unMuteOnSpaceBarDown);
-      document.removeEventListener("keyup", muteOnSpaceBarUp);
+      unlistenForSpaceBar();
     }
   });
 
@@ -295,54 +282,4 @@ window.addEventListener("DOMContentLoaded", () => {
       videoTrack.enable();
     }
   });
-
-  const startWhiteboard = (existingLines) => {
-    const lines = existingLines || [];
-    if (whiteboard) {
-      return;
-    }
-    showElements(activityDiv);
-    whiteboard = new Whiteboard(activityDiv);
-    lines.forEach((line) => {
-      whiteboard.drawOnCanvas(line);
-      whiteboard.saveLine(line);
-    });
-    videoChatDiv.classList.add("screen-share");
-    whiteboardBtn.innerText = "Stop whiteboard";
-    videoChat.whiteboardStarted(whiteboard);
-    whiteboard.addEventListener("draw", (event) => {
-      dataTrack.send(
-        JSON.stringify({
-          action: "whiteboard",
-          event: event.detail,
-        })
-      );
-    });
-    if (screenShareBtn) {
-      disableButton(screenShareBtn);
-    }
-  };
-
-  const stopWhiteboard = () => {
-    if (!whiteboard) {
-      return;
-    }
-    hideElements(activityDiv);
-    whiteboard.destroy();
-    whiteboard = null;
-    videoChatDiv.classList.remove("screen-share");
-    whiteboardBtn.innerText = "Start whiteboard";
-    if (videoChat) {
-      videoChat.whiteboardStopped();
-    }
-    if (screenShareBtn) {
-      enableButton(screenShareBtn);
-    }
-  };
-});
-
-// preloader script
-// For Live Projects
-window.addEventListener('load',function(){
-  document.querySelector('body').classList.add("loaded")  
 });
