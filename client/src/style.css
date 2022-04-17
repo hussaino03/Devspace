@@ -364,10 +364,10 @@ select {
 /* Loader Styles start here */
 .loader-wrapper {
   --line-width: 5px;
-  --curtain-color: #ffebeb;
-  --outer-line-color: #a8dadc;
-  --middle-line-color: #457b9d;
-  --inner-line-color: #1d3557;
+  --curtain-color: #fff;
+  --outer-line-color: #F22F46;
+  --middle-line-color: #F22F46;
+  --inner-line-color: #F22F46;
   position:fixed;
   top:0;
   left:0;
