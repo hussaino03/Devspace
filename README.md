@@ -50,9 +50,6 @@
 
 
 <!-- ABOUT THE PROJECT -->
-## PPT For Project
-The PPT for our project is attached below via a link.
-
 ## Domain Name
 
 Our project's domain name is "virtual.study"
