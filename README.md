@@ -1,55 +1,31 @@
+
 <div id="top"></div>
-<!--
-*** Thanks for checking out the Best-README-Template. If you have a suggestion
-*** that would make this better, please fork the repo and create a pull request
-*** or simply open an issue with the tag "enhancement".
-*** Don't forget to give the project a star!
-*** Thanks again! Now go create something AMAZING! :D
--->
 
-
-
-<!-- PROJECT SHIELDS -->
-<!--
-*** I'm using markdown "reference style" links for readability
-*** Reference links are enclosed in brackets [ ] instead of parentheses ( )
-*** See the bottom of this document for the declaration of the reference variables
-*** for contributors-url, forks-url, etc. This is an optional, concise syntax you may use
-*** https://www.markdownguide.org/basic-syntax/#reference-style-links
--->
 [![Contributors][contributors-shield]][contributors-url]
 [![Issues][issues-shield]][issues-url]
 [![MIT License][license-shield]][license-url]
 
-
 <!-- PROJECT LOGO -->
-<br />
+<br>
 <div align="center">
   <a href="https://github.com/hussaino03/Devspace">
     <img src="https://www.vhv.rs/dpng/d/53-534419_college-student-vector-png-transparent-png.png" alt="Logo" width="80" height="80">
   </a>
-
-  <h3 align="center">Virtual Classroom!</h3>
+  <h1 align="center">Virtual Classroom!</h1>
 
   <p align="center">
     A Virtual Classroom Designed To Optimize Learning Approaches!
-    <br />
+    <br>
+    <br>
     <a href="https://github.com/hussaino03/Devspace"><strong>Explore the docs »</strong></a>
-    <br />
-    <br />
-    <a href="https://github.com/hussaino03/Devspace">View Demo</a>
-    ·
-    <a href="https://github.com/hussaino03/Devspace/issues">Report Bug</a>
-    ·
-    <a href="https://github.com/hussaino03/Devspace/issues">Request Feature</a>
   </p>
 </div>
-
-
 
 <!-- TABLE OF CONTENTS -->
 <details>
   <summary>Table of Contents</summary>
+  <br>
+  <br>
   <ol>
     <li>
       <a href="#about-the-project">About The Project</a>
@@ -101,19 +77,12 @@ We use Twilio's Video SDK for JavaScript to enable users to stream data from the
 * Whitebord (learning tool)
 * Reactions (emojis)
 
-<p align="right">(<a href="#top">back to top</a>)</p>
-
 ### Built With
 
 * HTML
 * CSS
 * JavaScript
 * Twilio 
-* Google Firebase
-
-
-<p align="right">(<a href="#top">back to top</a>)</p>
-
 
 <!-- GETTING STARTED -->
 # Getting Started
@@ -132,53 +101,35 @@ We use Twilio's Video SDK for JavaScript to enable users to stream data from the
 
 In the project directory, you can run:
 
-## `npm install`
+`npm install`
+
 This will install all the required modules
-## `npm start`
+
+`npm start`
+
 This will start the server
 
-Runs the app in the development mode.\
-Open [http://localhost:1234](http://localhost:1234) to view it in your browser.
+Runs the app in the development mode.
 
-<p align="right">(<a href="#top">back to top</a>)</p>
+Open [http://localhost:1234](http://localhost:1234) to view it in your browser.
 
 <!-- ROADMAP -->
 ## Roadmap
 
-- [X] Integrate camera/mic option
-- [X] Integrate a whiteboard
-- [X] Integrate emojis
-- [X] Integrate disable/enable option for both the video and microphone 
-
-
-
-<p align="right">(<a href="#top">back to top</a>)</p>
-
-
-
-
+- [✅] Integrate camera/mic option
+- [✅] Integrate a whiteboard
+- [✅] Integrate emojis
+- [✅] Integrate disable/enable option for both the video and microphone 
 
 <!-- LICENSE -->
 ## License
 
 Distributed under the MIT License. See `LICENSE.txt` for more information.
 
-<p align="right">(<a href="#top">back to top</a>)</p>
-
-
-
-
 <!-- ACKNOWLEDGMENTS -->
 ## Acknowledgments
 
-Use this space to list resources you find helpful and would like to give credit to. I've included a few of my favorites to kick things off!
-
 * [GitHub README.md template](https://github.com/othneildrew/Best-README-Template)
-
-
-<p align="right">(<a href="#top">back to top</a>)</p>
-
-
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
