@@ -23,5 +23,5 @@ export const firebaseConfig = {
 export const app = initializeApp(firebaseConfig);
 
 // Initializing Firebase Authentication to get a reference to the service
-// auth code is found in ./auth.js
+// authentication logic is found in ./auth.js
 export const auth = getAuth(app)

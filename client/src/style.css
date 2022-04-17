@@ -15,6 +15,24 @@ body {
     Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 }
 
+.btn{
+  background-color: #F22F46;
+  display: inline-block;
+  color: #fff;
+  padding: 0.5rem 1.2rem;
+  margin: auto;
+  box-shadow: 1px 4px 15px rgba(0, 0, 0, 0.178);
+  cursor: pointer;
+}
+.sign-in-btn{
+  margin-top: 2rem;
+  text-align: center;
+}
+.header{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 header,
 footer {
   background-color: #F22F46;

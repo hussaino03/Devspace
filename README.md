@@ -108,8 +108,8 @@ We use Twilio's Video SDK for JavaScript to enable users to stream data from the
 * HTML
 * CSS
 * JavaScript
-* Twilio Video SDK
-* Twilio DataTrack API 
+* Twilio 
+* Google Firebase
 
 
 <p align="right">(<a href="#top">back to top</a>)</p>
