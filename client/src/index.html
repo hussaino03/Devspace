@@ -3,37 +3,46 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Video Collaboration</title>
+    <title>Virtual Classroom</title>
     <link href="./style.css" rel="stylesheet" />
   </head>
   <body>
-    <header><h1>Video Collaboration</h1></header>
+    <header><h1>Virtual Classroom</h1></header>
 
     <main>
+      <div class="loader-wrapper">
+        <div class="loader"></div>
+        <div class="loader-section section-left"></div>
+        <div class="loader-section section-right"></div>
+      </div>
+
       <div class="start card">
         <button id="media-preview">Preview camera and microphone</button>
       </div>
 
-      <div id="local-preview" class="card local-preview" hidden>
-        <div id="video-preview" class="video-preview"></div>
-        <canvas id="audio-data" width="300" height="100"></canvas>
-        <div class="controls">
-          <div id="camera-selector" class="media-select"></div>
-          <div id="mic-selector" class="media-select"></div>
+      <div id="local-preview" class="car local-preview" hidden>
+        <div class="left-preview">
+          <div id="video-preview" class="video-preview"></div>
+          <canvas id="audio-data" width="300" height="100"></canvas>
+          <div class="controls">
+            <div id="camera-selector" class="media-select"></div>
+            <div id="mic-selector" class="media-select"></div>
+          </div>
         </div>
-
-        <form action="/tokens" method="POST" id="join-room" hidden>
-          <h2>Join room</h2>
-          <div class="form-input">
-            <label for="identity">Name</label>
-            <input type="text" name="identity" id="identity" />
-          </div>
-          <div class="form-input">
-            <label for="roomName">Room</label>
-            <input type="text" name="roomName" id="roomName" />
-          </div>
-          <button type="submit">Join room</button>
-        </form>
+        <div class="right-preview">
+          <form action="/tokens" method="POST" id="join-room" hidden>
+            <h2>Join room</h2>
+            <div class="form-input">
+              <label for="identity">Name</label>
+              <input type="text" name="identity" id="identity" />
+            </div>
+            <div class="form-input">
+              <label for="roomName">Room</label>
+              <input type="text" name="roomName" id="roomName" />
+            </div>
+            <button type="submit">Join room</button>
+          </form>
+        </div>
       </div>
 
       <div class="video-chat" id="video-chat" hidden>
