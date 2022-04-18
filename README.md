@@ -52,8 +52,7 @@
 
 
 <!-- ABOUT THE PROJECT -->
-HeroHacks II Winner (Most Creative Use Of Twilio)
-
+**HeroHacks II Winner (Most Creative Use Of Twilio)**
 ![image](https://user-images.githubusercontent.com/67332652/163739019-b3284e49-dd45-4082-bd35-c1486a9a101f.png)
 
 ## Domain Name
