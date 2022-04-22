@@ -57,7 +57,7 @@
 
 ## Domain Name
 
-Our project's domain name is "virtual.study"
+Our project's domain name is "studywith.tech"
 
 ## Inspiration
 
