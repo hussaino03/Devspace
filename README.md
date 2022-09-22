@@ -78,7 +78,7 @@ We use Twilio's Video SDK for JavaScript to enable users to stream data from the
 ### Features:
 
 * Interactive environment to learn (video calling and microphone option)
-* Whitebord (learning tool)
+* Whitebord (learning + collaborative tool)
 * Reactions (emojis)
 * Screenshare ability 
 * Chatbox 
