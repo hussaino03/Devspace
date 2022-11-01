@@ -173,7 +173,6 @@ select {
   border-radius: 6px;
   border-width: 1px;
 }
-/* grid layout */
 
 .video-chat {
   display: grid;
