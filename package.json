@@ -7,7 +7,8 @@
     "start": "run-p \"server:start\" \"client:start\"",
     "server:start": "nodenv server/index.js --exec nodemon | pino-colada",
     "client:start": "parcel watch client/src/index.html --out-dir client/dist",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha --recursive test",
+    "bump-version": "npm version patch"
   },
   "keywords": [],
   "author": "Phil Nash <philnash@twilio.com> (https://philna.sh)",
