@@ -7,7 +7,7 @@
     "start": "run-p \"server:start\" \"client:start\"",
     "server:start": "nodenv server/index.js --exec nodemon | pino-colada",
     "client:start": "parcel watch client/src/index.html --out-dir client/dist",
-    "test": "mocha --recursive test",
+    "test": "mocha",
     "bump-version": "npm version patch"
   },
   "keywords": [],
