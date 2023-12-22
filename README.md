@@ -61,7 +61,7 @@ Our project's domain name is "studywith.tech"
 
 ## Inspiration
 
-The inspiration for our project came from the fact that due to the implementation of remote learning, teachers all over the world have to interact with their students virtually. Today, two major platforms namely Google Meet and Zoom dominate the virtual learning industry. However both platforms have shortcomings. Google Meet for example lacks the functionality of a built in collaborative whiteboard or annotation while a teacher is presenting. Zoom on the other hand has these functionalities but lacks the ease of access of google meet via a web browser. Our app aims to strike a combination of the features of Zoom and ease of access of Google Meet.
+The inspiration for our project came from the fact that due to the implementation of remote learning, teachers all over the world have to interact with their students virtually. Today, two major platforms namely Google Meet and Zoom dominate the virtual learning industry. However, both platforms have shortcomings. Google Meet for example lacks the functionality of a built in collaborative whiteboard or annotation while a teacher is presenting. Zoom on the other hand has these functionalities but lacks the ease of access of google meet via a web browser. Our app aims to strike a combination of the features of Zoom and ease of access of Google Meet.
 
 ## What it does
 
